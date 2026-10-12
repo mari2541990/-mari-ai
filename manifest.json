@@ -1,0 +1,9 @@
+{
+  "name": "MARI AI Personal Assistant",
+  "short_name": "MARI AI",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#030503",
+  "theme_color": "#050805",
+  "description": "A free black and neon green personal assistant dashboard."
+}

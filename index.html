@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050805">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MARI AI">
+<title>MARI AI</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#030503;--panel:#0a100a;--green:#39ff14;--soft:#a6ff9a;--muted:#8aa187;--line:#1c5519}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#102010 0%,var(--bg) 55%);color:#efffee;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));}
+main{max-width:680px;margin:0 auto}.top{display:flex;align-items:center;gap:14px;padding:24px 4px 18px}.logo{width:58px;height:58px;border:2px solid var(--green);border-radius:18px;display:grid;place-items:center;color:var(--green);font-size:27px;box-shadow:0 0 20px #39ff1433}.brand{flex:1}.brand h1{margin:0;color:var(--green);font-size:27px;letter-spacing:2px}.brand p{margin:4px 0 0;color:var(--soft);font-size:11px;letter-spacing:1.8px}.status{font-size:10px;color:var(--green);border:1px solid var(--line);border-radius:99px;padding:7px 9px}
+.panel{background:linear-gradient(145deg,#0d160d,#070a07);border:1px solid var(--line);border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 8px 30px #0007}.section-title{font-size:12px;color:var(--soft);letter-spacing:1.7px;margin:0 0 12px}.hello{font-size:22px;font-weight:750;margin:0 0 6px}.sub{color:var(--muted);font-size:13px;line-height:1.5;margin:0}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.action{border:1px solid var(--line);background:#071007;color:#eaffea;border-radius:16px;padding:15px 12px;text-align:left;min-height:94px;font-size:15px;font-weight:700}.action span{display:block;color:var(--green);font-size:23px;margin-bottom:8px}.action small{display:block;color:var(--muted);font-weight:400;margin-top:5px;font-size:11px}.action:active,.primary:active{transform:scale(.98);background:#102510}
+button,input,textarea{font:inherit}.row{display:flex;gap:8px}.row input{min-width:0;flex:1}.field{width:100%;background:#030603;color:white;border:1px solid var(--line);border-radius:13px;padding:13px;outline:none}.field:focus{border-color:var(--green)}.primary{background:var(--green);color:#031003;border:0;border-radius:13px;padding:12px 15px;font-weight:800}.secondary{background:#0b150b;color:var(--green);border:1px solid var(--line);border-radius:13px;padding:12px;font-weight:700}.task{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #193019}.task:last-child{border-bottom:0}.task input{accent-color:var(--green);width:18px;height:18px}.task label{flex:1;overflow-wrap:anywhere}.task.done label{text-decoration:line-through;color:#668063}.delete{background:none;border:0;color:#83a27e;font-size:20px;padding:2px 7px}.result{white-space:pre-wrap;color:var(--soft);font-size:13px;line-height:1.6;margin-top:12px}.footer{text-align:center;color:#547252;font-size:10px;letter-spacing:1.2px;padding:20px 0 8px}.notice{font-size:12px;color:#a6ff9a;line-height:1.5}.hidden{display:none}
+</style>
+</head>
+<body><main>
+<header class="top"><div class="logo">⌁</div><div class="brand"><h1>MARI AI</h1><p>PERSONAL ASSISTANT</p></div><div class="status">● READY</div></header>
+<section class="panel"><p class="section-title">SYSTEM OVERVIEW</p><p class="hello" id="greeting">Vanakkam, Mari.</p><p class="sub" id="clock">Your personal dashboard is ready.</p></section>
+<section class="panel"><p class="section-title">QUICK ACTIONS</p><div class="actions">
+<button class="action" id="voiceBtn"><span>◉</span>Voice input<small>Speak a note or command</small></button>
+<button class="action" id="appsBtn"><span>▣</span>Open apps<small>Choose a common app</small></button>
+<button class="action" id="taskBtn"><span>✓</span>Daily tasks<small>Add and track tasks</small></button>
+<button class="action" id="helpBtn"><span>⌘</span>iPhone automation<small>Set up Apple Shortcuts</small></button>
+</div><div id="voiceResult" class="result hidden"></div></section>
+<section class="panel" id="appsPanel" hidden><p class="section-title">APP LAUNCHER</p><p class="sub">Choose an app. iOS may block direct opening for some apps; use the app's installed icon if a link does not work.</p><div class="actions" style="margin-top:12px">
+<button class="secondary" onclick="openApp('https://wa.me/')">WhatsApp</button><button class="secondary" onclick="openApp('https://www.google.com/')">Google</button><button class="secondary" onclick="openApp('https://www.youtube.com/')">YouTube</button><button class="secondary" onclick="openApp('https://www.google.com/maps')">Maps</button><button class="secondary" onclick="openApp('https://github.com/')">GitHub</button><button class="secondary" onclick="openApp('https://chatgpt.com/')">ChatGPT</button>
+</div></section>
+<section class="panel" id="tasksPanel"><p class="section-title">MY TASKS</p><div class="row"><input class="field" id="taskInput" placeholder="Type a task…" maxlength="140"><button class="primary" id="addTask">ADD</button></div><div id="taskList" style="margin-top:8px"></div><p class="notice">Tasks are saved on this device in this browser. This demo does not create Apple Reminders automatically.</p></section>
+<section class="panel hidden" id="automationPanel"><p class="section-title">IPHONE AUTOMATION GUIDE</p><p class="sub">To make MARI AI run phone actions, create them in Apple's Shortcuts app. iOS does not let a normal webpage control every app or phone setting.</p><ol class="notice"><li>Open Apple Shortcuts.</li><li>Tap + and add an action such as Open App, Show Notification, or Add New Reminder.</li><li>Name the shortcut “MARI”.</li><li>Say “Hey Siri, MARI” to run it.</li><li>For a Home Screen icon: open shortcut details → Add to Home Screen.</li></ol><button class="secondary" id="hideGuide">CLOSE GUIDE</button></section>
+<section class="panel"><p class="section-title">ASSISTANT NOTE</p><p class="sub">This is a free personal dashboard prototype, not a full AI model. It can manage local task notes and open web services. Live AI chat and deeper phone automation require a supported AI service or Apple Shortcuts permissions.</p></section>
+<div class="footer">MARI AI • BLACK / NEON GREEN • LOCAL PROTOTYPE</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function updateClock(){let d=new Date();$('clock').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})+' • '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});$('greeting').textContent=(d.getHours()<12?'Good morning':d.getHours()<18?'Good afternoon':'Good evening')+', Mari.'}
+updateClock();setInterval(updateClock,30000);
+function openApp(url){window.open(url,'_blank','noopener');}
+$('appsBtn').onclick=()=>{$('appsPanel').hidden=!$('appsPanel').hidden};
+$('taskBtn').onclick=()=>{$('taskInput').focus();$('tasksPanel').scrollIntoView({behavior:'smooth',block:'center'})};
+$('helpBtn').onclick=()=>{$('automationPanel').classList.toggle('hidden');$('automationPanel').scrollIntoView({behavior:'smooth',block:'center'})};
+$('hideGuide').onclick=()=> $('automationPanel').classList.add('hidden');
+function getTasks(){try{return JSON.parse(localStorage.getItem('mari_tasks')||'[]')}catch(e){return []}}
+function saveTasks(tasks){localStorage.setItem('mari_tasks',JSON.stringify(tasks));renderTasks()}
+function renderTasks(){let tasks=getTasks(),root=$('taskList');root.innerHTML='';if(!tasks.length){root.innerHTML='<p class="sub">No tasks yet. Add your first task above.</p>';return}tasks.forEach((t,i)=>{let row=document.createElement('div');row.className='task'+(t.done?' done':'');let cb=document.createElement('input');cb.type='checkbox';cb.checked=t.done;cb.onchange=()=>{let a=getTasks();a[i].done=cb.checked;saveTasks(a)};let label=document.createElement('label');label.textContent=t.text;let del=document.createElement('button');del.className='delete';del.textContent='×';del.setAttribute('aria-label','Delete task');del.onclick=()=>{let a=getTasks();a.splice(i,1);saveTasks(a)};row.append(cb,label,del);root.append(row)})}
+$('addTask').onclick=()=>{let text=$('taskInput').value.trim();if(!text)return;let a=getTasks();a.push({text,done:false});saveTasks(a);$('taskInput').value=''};
+$('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('addTask').click()});renderTasks();
+$('voiceBtn').onclick=()=>{let out=$('voiceResult');out.classList.remove('hidden');let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){out.textContent='Voice input is not supported in this browser. You can still type tasks below, or use Siri with your Apple Shortcut.';return}let r=new SR();r.lang='ta-IN';r.interimResults=false;r.maxAlternatives=1;out.textContent='Listening…';r.onresult=e=>{let spoken=e.results[0][0].transcript;out.textContent='Heard: '+spoken+'\\nYou can add this as a task below.';$('taskInput').value=spoken};r.onerror=e=>{out.textContent='Voice input failed ('+e.error+'). Check microphone permission, or use Siri.'};r.start()};
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
